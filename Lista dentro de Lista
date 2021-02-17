@@ -1,0 +1,163 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct{
+    int secaoS;
+    char nomeSecao[30];
+}CLIENTE;
+typedef struct No{
+    CLIENTE info;
+    struct No *prox;
+    struct NO *produto;
+}SECAO;
+typedef struct{
+    int id;
+    char nomeSecaoProduto[30];
+    char nomeProduto[30];
+    float preco;
+
+}CLIENTE2;
+
+typedef struct NO{
+    CLIENTE2 infoB;
+    struct NO*prox;
+}PRODUTO;
+
+SECAO *Criar(){
+    return NULL;
+
+}
+void Insere(SECAO **secao, CLIENTE cl, PRODUTO **produto, CLIENTE2 cli){
+    SECAO *novo = (SECAO*)malloc(sizeof(SECAO));
+    novo->info = cl;
+    novo->prox = NULL;
+    PRODUTO *Novo = (PRODUTO*)calloc(1,sizeof(PRODUTO));
+    Novo->infoB = cli;
+   if(*secao == NULL)
+   {
+       *secao = novo;
+       novo->produto = Novo;
+       novo->info.secaoS = 1;
+
+       Novo->infoB.id = 1;
+       Novo->prox = NULL;
+
+   }
+   else{
+       SECAO *aux = *secao;
+       SECAO *anterior = NULL;
+       while((aux!=NULL)&&(Novo->infoB.id != aux->info.secaoS))
+       {
+           anterior = aux;
+           aux = aux->prox;
+       }
+       if(aux==NULL)
+       {
+           anterior->prox = novo;
+           novo->produto = Novo;
+           novo->info.secaoS = anterior->info.secaoS+1;
+           Novo->infoB.id = 1;
+       }
+       if(aux!=NULL)
+       {
+           PRODUTO *auxi;
+           auxi->prox = aux->produto;
+           PRODUTO *anteriori = NULL;
+           while(auxi != NULL)
+           {
+               anteriori = auxi;
+               auxi = auxi->prox;
+           }
+           anteriori->prox = Novo;
+       }
+
+   }
+
+
+}
+
+void Imprimir(SECAO **secao, /*PRODUTO **produto,*/ int sec){
+    SECAO *aux = *secao;
+    int i=1;
+   if(*secao != NULL)
+   {
+
+              if(sec==aux->info.secaoS)
+                {
+                    PRODUTO *auxi = aux->produto;
+                    while(auxi!=NULL)
+                    {
+                        printf("\nSECAO: %d",auxi->infoB.id);
+                        printf("\nNome Secao: %s",auxi->infoB.nomeSecaoProduto);
+                        printf("\nNome Produto: %s",auxi->infoB.nomeProduto);
+                        printf("\nPreco: %f",auxi->infoB.preco);
+                        auxi = auxi->prox;
+                    }
+                }
+
+            aux = aux->prox;
+            i++;
+
+   }
+
+    else
+        return;
+
+
+}
+int main()
+{
+    CLIENTE cl;
+    CLIENTE2 cli;
+
+    SECAO *secao;
+    PRODUTO *produto;
+    secao = Criar();
+//    produto = secao;
+    int op = -1;
+    int sec;
+
+    while(op!=0)
+    {
+        printf("\n1 - Criar Secao");
+        printf("\n2 - Inserir na Secao");
+        printf("\n3 - Imprimir por secao");
+        printf("\nOperacao: ");
+        scanf("%d",&op);
+
+        switch(op)
+        {
+            case 1:
+                secao = Criar();
+                break;
+            case 2:
+                printf("\nId produto: ");
+                scanf("%d",&cli.id);
+                printf("\nNome da secao: ");
+                fflush(stdin);
+                gets(cli.nomeSecaoProduto);
+                printf("\nNome Produto: ");
+                fflush(stdin);
+                gets(cli.nomeProduto);
+                printf("\nPreco: ");
+                scanf("%f",&cli.preco);
+                printf("\n");
+                Insere(&secao, cl, &produto, cli);
+                break;
+            case 3:
+                printf("\nImprimir secao: ");
+                scanf("%d",&sec);
+                Imprimir(&secao,sec);
+                break;
+        }
+        printf("\n");
+    }
+
+
+
+    system("PAUSE");
+    return 0;
+}
+
+
+
