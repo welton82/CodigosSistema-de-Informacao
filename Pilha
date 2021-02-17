@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include<stdlib.h>
+#define MAX 800
+
+typedef struct {
+    int num;
+}CLIENTE;
+
+typedef struct{
+    CLIENTE vetor[MAX];
+    int nElem;
+}PILHA;
+
+void CriarPilha(PILHA *pilha){
+    pilha->nElem = 0;
+}
+void Inserir(PILHA *pilha, CLIENTE cl){
+    pilha->vetor[pilha->nElem] = cl;
+    pilha->nElem = pilha->nElem +1;
+}
+
+void Listar(PILHA *pilha){
+    CLIENTE cl;
+    int i;
+    for(i = 0; i<pilha->nElem; i++)
+    {
+        cl = pilha->vetor[i];
+        printf("\nValor: %d",cl.num);
+    }
+}
+void Remover(PILHA *pilha){
+    pilha->nElem = pilha->nElem-1;
+}
+int main()
+{
+    PILHA pilha;
+    CLIENTE cl;
+    CriarPilha(&pilha);
+    int op = -1;
+
+    while(op!=0)
+    {
+        printf("\n1 - Criar Pilha");
+        printf("\n2 - Inserir");
+        printf("\n3 - Listar");
+        printf("\n4 - Remover");
+        printf("\nOperacao: ");
+        scanf("%d",&op);
+        switch(op)
+        {
+        case 1:
+            CriarPilha(&pilha);
+            break;
+        case 2:
+            printf("\nNumero: ");
+            scanf("%d",&cl.num);
+            Inserir(&pilha,cl);
+            break;
+        case 3:
+            Listar(&pilha);
+            break;
+        case 4:
+            Remover(&pilha);
+            break;
+
+        }
+
+    }
+}
+
+
