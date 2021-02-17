@@ -1,0 +1,164 @@
+#include <stdio.h>
+
+typedef struct{
+    char nome[30];
+    int conta;
+}CLIENTE;
+
+typedef struct no{
+    CLIENTE info;
+    struct no *prox;
+}FILA;
+
+FILA *CriarFila(){
+    return NULL;
+}
+
+void Inserir(FILA **fila, CLIENTE cl){
+    FILA *novo = (FILA*) calloc(1, sizeof(FILA));
+    novo->info = cl;
+
+    FILA *aux = *fila;
+    FILA *anterior = NULL;
+    while(aux!=NULL)
+    {
+        anterior = aux;
+        aux = aux->prox;
+    }
+    if(anterior == NULL)
+    {
+        novo->prox = aux;
+        *fila = novo;
+    }
+    else{
+        novo->prox = aux;
+        anterior->prox = novo;
+     }
+}
+
+FILA *Acessar(FILA **fila, int pos){
+    int i=0;
+    FILA *aux = *fila;
+    while(i!=pos)
+    {
+        aux = aux->prox;
+        i++;
+    }
+    if(i==pos)
+    {
+        printf("\nNome: %s", aux->info.nome);
+        printf("\nConta: %d", aux->info.conta);
+    }
+    else{
+        return NULL;
+    }
+}
+void Listar(FILA **fila){
+    FILA *aux = *fila;
+
+    while(aux!=NULL)
+    {
+        printf("\nNome: %s....", aux->info.nome);
+        printf("Conta: %d\n", aux->info.conta);
+        aux = aux->prox;
+    }
+}
+void Destruir(FILA **fila){
+    FILA *aux = *fila;
+    while(aux!=NULL)
+    {
+        free(aux);
+        aux = aux->prox;
+    }
+    *fila = NULL;
+}
+
+void Eliminar(FILA **fila){
+    FILA *aux = *fila;
+    free(aux);
+    aux = aux->prox;
+    *fila = aux;
+
+
+}
+
+FILA *BuscarEnderecoNome(FILA **fila, char nome[]){
+    FILA *aux = *fila;
+    while(aux!=NULL)
+    {
+        if(strcmp(nome,aux->info.nome)== 0)
+        {
+            printf ("\n**nome: %s",aux->info.nome);
+            printf ("   conta: %d**\n",aux->info.conta);
+
+        }
+        aux= aux->prox;
+    }
+    return NULL;
+}
+
+int main()
+{
+    FILA *fila;
+
+    CLIENTE cl;
+    int op = -1;
+    int pos;
+    char nome[30];
+    fila = CriarFila();
+
+    do{
+        printf("\n1 - Criar Fila");
+        printf("\n3 - Inserir na Fila");
+        printf("\n5 - Acessar Posição");
+        printf("\n6 - Listar");
+        printf("\n7 - Remover");
+        printf("\n8 - Buscar dados pelo Nome");
+        printf("\nInformar Operação: ");
+        scanf("%d", &op);
+
+
+        switch(op)
+        {
+        case 1:
+            CriarFila();
+            break;
+
+        case 3:
+            printf("\nNome: ");
+            fflush(stdin);
+            gets(cl.nome);
+            printf("\nConta: ");
+            scanf("%d", &cl.conta);
+            Inserir(&fila, cl);
+            break;
+
+        case 5:
+            printf("\nPosição: ");
+            scanf("%d",&pos);
+            Acessar(&fila, pos);
+            break;
+        case 6:
+            Listar(&fila);
+            break;
+        case 7:
+            Eliminar(&fila);
+            break;
+        case 8:
+            printf("\nNome: ");
+            fflush(stdin);
+            gets(nome);
+            BuscarEnderecoNome(&fila, nome);
+            break;
+        case 0:
+            printf("\nVocê Saiu! ");
+            break;
+        }
+     }while(op!=0);
+}
+
+
+
+
+
+
