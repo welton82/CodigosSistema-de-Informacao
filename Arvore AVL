@@ -1,0 +1,343 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+typedef struct{
+	char nome[30];
+	int ano;
+	int balanco, altura, ladoE,ladoD;
+}CLIENTE;
+typedef struct No{
+	CLIENTE info;
+	struct No *prox;
+	struct No *ant;
+}AVL;
+
+AVL *CriarAVL(){
+	return NULL;
+}
+
+void RotacaoLL(AVL **raiz){
+	AVL *no;
+	no = (*raiz)->ant;
+	(*raiz)->ant = no->prox;
+	no->prox = (*raiz);
+	*raiz = no;
+}
+void RotacaoRR(AVL **raiz){
+	AVL *no;
+	no = (*raiz)->prox;
+	(*raiz)->prox = no->ant;
+	no->ant = (*raiz);
+	*raiz = no;
+}
+void RotacaoLR(AVL **raiz){
+	RotacaoRR(&((*raiz)->ant));
+	RotacaoLL(raiz);
+}
+void RotacaoRL(AVL **raiz){
+	RotacaoLL(&((*raiz)->prox));
+	RotacaoRR(raiz);
+}
+
+void Contagem(AVL **raiz){
+	if(*raiz!=NULL)
+	{
+		Contagem(&((*raiz)->ant));
+		Contagem(&((*raiz)->prox));
+		if(((*raiz)->ant != NULL) && ((*raiz)->prox ==NULL))
+		{
+			(*raiz)->info.ladoE = (*raiz)->ant->info.altura+1;
+			(*raiz)->info.ladoD = 0;
+			(*raiz)->info.altura = ((*raiz)->info.ladoE >= (*raiz)->info.ladoD)?
+					(*raiz)->info.ladoE:(*raiz)->info.ladoD;
+			(*raiz)->info.balanco = (*raiz)->info.ladoE - (*raiz)->info.ladoD;	
+		}
+		if(((*raiz)->ant == NULL) && ((*raiz)->prox !=NULL))
+		{
+			(*raiz)->info.ladoE = 0;
+			(*raiz)->info.ladoD = (*raiz)->prox->info.altura +1;
+			(*raiz)->info.altura = ((*raiz)->info.ladoE >= (*raiz)->info.ladoD)?
+					(*raiz)->info.ladoE:(*raiz)->info.ladoD;
+			(*raiz)->info.balanco = (*raiz)->info.ladoE - (*raiz)->info.ladoD;
+		}
+		if(((*raiz)->ant != NULL) && ((*raiz)->prox !=NULL))
+		{
+			(*raiz)->info.ladoE = (*raiz)->ant->info.altura+1;
+			(*raiz)->info.ladoD = (*raiz)->prox->info.altura +1;
+			(*raiz)->info.altura = ((*raiz)->info.ladoE >= (*raiz)->info.ladoD)?
+					(*raiz)->info.ladoE:(*raiz)->info.ladoD;
+			(*raiz)->info.balanco = (*raiz)->info.ladoE - (*raiz)->info.ladoD;		
+		}
+		if(((*raiz)->info.balanco == 2)&& ((*raiz)->ant->info.balanco == 1))
+		{
+			RotacaoLL(raiz);
+		}
+		if(((*raiz)->info.balanco == -2)&& ((*raiz)->ant->info.balanco == -1))
+		{
+			RotacaoRR(raiz);
+		}
+		if(((*raiz)->info.balanco == 2)&& ((*raiz)->ant->info.balanco == -1))
+		{
+			RotacaoLR(raiz);
+		}
+	
+		if(((*raiz)->info.balanco == -2)&& ((*raiz)->ant->info.balanco == 1))
+		{
+			RotacaoRL(raiz);
+		}		
+	}
+	
+}
+
+void Inserir(AVL **raiz,CLIENTE cl){
+	AVL *novo = (AVL*) calloc(1,sizeof(AVL));
+	novo->info = cl;
+	novo->info.balanco = 0;
+	novo->info.altura = 0;
+	novo->info.ladoE = 0;
+	novo->info.ladoD = 0;
+	AVL *aux = *raiz;
+	AVL *anterior = NULL;
+	if(*raiz ==NULL)
+	{
+		*raiz = novo;
+	}
+	else{
+		while(aux != NULL)
+		{
+			anterior = aux;
+			if(cl.ano <= aux->info.ano)
+			{
+				aux = aux->ant;
+			}
+			else{
+				aux = aux->prox;
+			}
+		}
+		if(cl.ano <= anterior->info.ano)
+			{
+				anterior->ant = novo;
+			}
+		else
+		{
+			anterior->prox = novo;
+		}	
+		Contagem(raiz);	
+	}
+}
+
+void PreOrdem(AVL **raiz){
+	if(*raiz!=NULL)
+	{
+		//Contagem(raiz);
+		printf("\nNome: %s",(*raiz)->info.nome);
+		printf("\nAno: %d",(*raiz)->info.ano);
+		printf("\nladoE: %d",(*raiz)->info.ladoE);
+		printf("\nladoD: %d",(*raiz)->info.ladoD);
+		printf("\nAltura: %d",(*raiz)->info.altura);
+		printf("\nBalanco: %d",(*raiz)->info.balanco);
+		PreOrdem(&((*raiz)->ant));
+		PreOrdem(&((*raiz)->prox));
+	}
+}
+void EmOrdem(AVL **raiz){
+	if(*raiz!=NULL)
+	{
+		//Contagem(raiz);
+		EmOrdem(&((*raiz)->ant));
+		printf("\nNome: %s",(*raiz)->info.nome);
+		printf("\nAno: %d",(*raiz)->info.ano);
+		printf("\nladoE: %d",(*raiz)->info.ladoE);
+		printf("\nladoD: %d",(*raiz)->info.ladoD);
+		printf("\nAltura: %d",(*raiz)->info.altura);
+		printf("\nBalanco: %d",(*raiz)->info.balanco);
+		
+		EmOrdem(&((*raiz)->prox));
+	}
+}
+void PosOrdem(AVL **raiz){
+	if(*raiz!=NULL)
+	{
+		//Contagem(raiz);
+		PosOrdem(&((*raiz)->ant));
+		PosOrdem(&((*raiz)->prox));
+		printf("\nNome: %s",(*raiz)->info.nome);
+		printf("\nAno: %d",(*raiz)->info.ano);
+		printf("\nladoE: %d",(*raiz)->info.ladoE);
+		printf("\nladoD: %d",(*raiz)->info.ladoD);
+		printf("\nAltura: %d",(*raiz)->info.altura);
+		printf("\nBalanco: %d",(*raiz)->info.balanco);
+		
+	}
+}
+void Remover(AVL **raiz, int ano){
+	if(*raiz!=NULL)
+	{
+		Remover(&((*raiz)->ant),ano);
+		Remover(&((*raiz)->prox),ano);
+		if(ano == (*raiz)->info.ano)
+		{
+			if(((*raiz)->ant==NULL) || ((*raiz)->prox==NULL))
+			{
+				if((*raiz)->ant !=NULL)
+				{
+					(*raiz) = (*raiz)->ant->prox;
+				}
+				else{
+					(*raiz) = (*raiz)->prox;
+				}
+			}
+			else{
+				AVL *no = (*raiz)->ant;
+				no->prox = (*raiz)->prox;
+				*raiz = no;
+			}
+		}
+		Contagem(raiz);
+	}
+}
+void RemoverNome(AVL **raiz,char nome[]){
+	if(*raiz!=NULL)
+	{
+		RemoverNome(&((*raiz)->ant),nome);
+		RemoverNome(&((*raiz)->prox),nome);
+		if(strcmp(nome, (*raiz)->info.nome)==0)
+		{
+			if(((*raiz)->ant==NULL) || ((*raiz)->prox==NULL))
+				{
+					if((*raiz)->ant !=NULL)
+					{
+						(*raiz) = (*raiz)->ant->prox;
+					}
+					else{
+						(*raiz) = (*raiz)->prox;
+					}
+				}
+				else{
+					AVL *no = (*raiz)->ant;
+					no->prox = (*raiz)->prox;
+					*raiz = no;
+				}
+		}
+		Contagem(raiz);
+	}	
+}
+void Destruir(AVL **raiz){
+	Destruir(&((*raiz)->ant));
+	Destruir(&((*raiz)->prox));
+	if(((*raiz)->ant == NULL)&&((*raiz)->prox == NULL))
+}
+int BuscaPeloNome(AVL **raiz, char nome[]){
+	if(*raiz != NULL)
+	{
+		int i;
+		BuscaPeloNome(&((*raiz)->ant),nome);
+		BuscaPeloNome(&((*raiz)->prox),nome);
+		if(strcmp(nome,(*raiz)->info.nome) == 0)
+		{
+			printf("\nNome: %s",(*raiz)->info.nome);
+			printf("\nAno: %d",(*raiz)->info.ano);
+			printf("\nladoE: %d",(*raiz)->info.ladoE);
+			printf("\nladoD: %d",(*raiz)->info.ladoD);
+			printf("\nAltura: %d",(*raiz)->info.altura);
+			printf("\nBalanco: %d",(*raiz)->info.balanco);
+			i = 1;
+		}
+	}
+	
+}
+int BuscaPeloAno(AVL **raiz, int ano){
+	if(*raiz != NULL)
+	{
+		int i;
+		BuscaPeloAno(&((*raiz)->ant),ano);
+		BuscaPeloAno(&((*raiz)->prox),ano);
+		if(ano==(*raiz)->info.ano)
+		{
+			printf("\nNome: %s",(*raiz)->info.nome);
+			printf("\nAno: %d",(*raiz)->info.ano);
+			printf("\nladoE: %d",(*raiz)->info.ladoE);
+			printf("\nladoD: %d",(*raiz)->info.ladoD);
+			printf("\nAltura: %d",(*raiz)->info.altura);
+			printf("\nBalanco: %d",(*raiz)->info.balanco);
+			i = 1;
+		}
+	}
+	
+}
+int main()
+{
+	CLIENTE cl;
+	AVL *raiz;
+	raiz = CriarAVL();
+	int op = -1;
+	int ano;
+	char nome[30];
+	
+	while(op!=0)
+	{
+		printf("\n1 - Criar AVL");
+		printf("\n2 - Inserir");
+		printf("\n3 - Pre Ordem");
+		printf("\n4 - Em Ordem");
+		printf("\n5 - Pos Ordem");
+		printf("\n6 - Remover pelo Ano");
+		printf("\n7 - Remover Pelo Nome");
+		printf("\n8 - Busca pelo Nome");
+		printf("\n9 - Busca pelo Ano");
+		printf("\nOperacao: ");
+		scanf("%d",&op);
+		switch(op)
+		{
+			case 1:
+				CriarAVL();
+				break;
+			case 2:
+				printf("\nNome: ");
+				fflush(stdin);
+				gets(cl.nome);
+				printf("\nAno: ");
+				scanf("%d",&cl.ano);
+				Inserir(&raiz, cl);
+				break;
+			case 3:
+				PreOrdem(&raiz);
+				break;
+			case 4:
+				EmOrdem(&raiz);
+				break;
+			case 5:
+				PosOrdem(&raiz);
+				break;
+			case 6:
+				printf("\nAno: ");
+				scanf("%d",&ano);
+				Remover(&raiz,ano);
+				break;
+			case 7:
+				printf("\nNome: ");
+				fflush(stdin);
+				gets(nome);
+				RemoverNome(&raiz, nome);
+				break;
+			case 8:
+				printf("\nNome: ");
+				fflush(stdin);
+				gets(nome);
+				BuscaPeloNome(&raiz,nome);
+				break;
+			case 9:
+				printf("\nAno: ");
+				scanf("%d",&ano);
+				BuscaPeloAno(&raiz,ano);
+				break;
+				
+		}
+	}
+	
+	return 0;
+}
+
+
+
+
