@@ -1,0 +1,182 @@
+#include<stdio.h>
+#include<locale.h>
+#include<tchar.h>
+#define MAX 500
+
+typedef struct{
+    int conta;
+    char nome[30];
+}CLIENTE;
+
+typedef struct{
+    CLIENTE vetor[MAX];
+    int nElem;
+}LISTA;
+
+void CriarLista(LISTA *lista){
+    lista->nElem = 0;
+}
+
+void InserirFim(LISTA *lista, CLIENTE cl){
+
+    if(lista->nElem == 0){
+        lista->vetor[lista->nElem] = cl;
+        lista->nElem = lista->nElem+1;
+
+    }
+
+    else{
+
+        for(int i = lista->nElem; i>0; i--)
+        {
+            if(lista->vetor[i-1].conta > cl.conta)
+            {
+                lista->vetor[i] = lista->vetor[i-1];
+                lista->vetor[i-1] = cl;
+            }
+            else if(cl.conta > lista->vetor[lista->nElem -1].conta)
+            {
+                lista->vetor[lista->nElem] = cl;
+                i = 1;
+            }
+        }
+        lista->nElem = lista->nElem +1;
+   }
+}
+
+CLIENTE *AcessarDoInicio(LISTA *lista, int pos){
+
+
+    if(pos < lista->nElem)
+    {
+        return &lista->vetor[pos];
+    }
+    else
+        return NULL;
+}
+CLIENTE *AcessarDoFim(LISTA *lista, int pos){
+
+    if(pos<lista->nElem)
+    {
+        return &lista->vetor[lista->nElem - pos -1];
+    }
+    else
+        return NULL;
+}
+
+void Listar(LISTA *lista){
+    CLIENTE cl;
+    for(int i = 0; i<lista->nElem; i++)
+    {
+        cl = lista->vetor[i];
+        printf("\nNome: %s...",cl.nome);
+        printf("Conta: %d\n",cl.conta);
+    }
+}
+int Destruir(LISTA *lista){
+    lista->nElem = 0;
+}
+
+void EliminarLista(LISTA *lista, int pos){
+    int i;
+    if(pos <= lista->nElem)
+    {
+        for(i = pos; i<lista->nElem-1; i++)
+        {
+            lista->vetor[i] = lista->vetor[i+1];
+        }
+        lista->nElem = lista->nElem -1;
+    }
+    else
+        return NULL;
+}
+CLIENTE *BuscaPeloNome(LISTA *lista, char nome[30]){
+    for(int i = 0; i<lista->nElem; i++)
+    {
+        if(strcmp(nome, lista->vetor[i].nome)==0)
+        {
+            return &lista->vetor[i];
+        }
+        else
+            return NULL;
+    }
+}
+int main()
+{
+    LISTA lista;
+    CLIENTE cl;
+    CLIENTE *cb;
+    CriarLista(&lista);
+    int op = -1;
+    char nome[30];
+    int pos;
+
+    while(op!=0)
+    {
+        printf("\n1 - Criar Lista");
+        printf("\n3 - Inserir");
+        printf("\n5 - Acessar do Inicio");
+        printf("\n6 - Busca pelo Nome");
+        printf("\n7 - Listar");
+        printf("\n8 - Busca pelo Nome");
+        printf("\n9 - Eliminar Posição");
+        printf("\n10 - Destruir");
+        printf("\n10 - Operação: ");
+        scanf("%d",&op);
+        switch(op)
+        {
+        case 1:
+            CriarLista(&lista);
+            break;
+
+        case 3:
+            fflush(stdin);
+            printf("\nNome: ");
+            gets(cl.nome);
+            printf("\nConta: ");
+            scanf("%d",&cl.conta);
+            InserirFim(&lista, cl);
+            break;
+
+        case 5:
+            printf("\nPosição: ");
+            scanf("%d",&pos);
+            cb = AcessarDoInicio(&lista,pos);
+            if(cb != NULL)
+            {
+                printf("\nNome: %s",cb->nome);
+                printf("\nConta: %d",cb->conta);
+            }
+            else{
+                 printf("\nPosição Inexistente");
+            }
+            break;
+        case 7:
+            Listar(&lista);
+            break;
+        case 8:
+            fflush(stdin);
+            printf("\nNome: ");
+            gets(nome);
+            cb = BuscaPeloNome(&lista,nome);
+            if(cb!=NULL)
+            {
+                printf("\nNome: %s",cb->nome);
+                printf("\nConta: %d",cb->conta);
+            }
+            else
+                printf("\nNome Não Existe");
+                break;
+        case 9:
+           printf("\nPosição para eliminar: ");
+           scanf("%d", &pos);
+           EliminarLista(&lista,pos);
+            break;
+        case 10:
+            Destruir(&lista);
+            break;
+        }
+    }
+}
+
+
