@@ -1,0 +1,83 @@
+Programação Imperativa II
+Aluno: Welton Leite da Paixão
+Docente: Professor Paulo Almeida
+/*ALGORITMO NUMERO PRIMOS
+INICIO
+DEFINIR VARIAVEIS
+LEIA N
+PRIMO[1]=1
+PRIMO[2]=2
+PRIMO[3]=3
+CONTADOR=3
+NUMERO=3
+ENQUANTO CONTADOR<N FAÇA
+	NUMERO = NUMERO+2 
+	RAIZ=RAIZQUADRADA(NUMERO)
+	I=3
+	DIVISIVEL=FALSO
+	ENQUANTO NAO DIVISIVEL E PRIMO [I] <=RAIZ ENTAO
+	SE NUMERO DIVISIVEL POR PRIMO[I] ENTAO
+	DIVISIVEL = VERDADEIRO
+	SENAO
+	I=I+1
+	FIM SE
+	FIM ENQUANTO
+SE NAO DIVISIVEL ENTAO
+CONTADOR = CONTADOR +1
+PRIMO[CONTADOR]=NUMERO
+FIM SE
+FIM ENQUANTO*/
+#include<iostream>
+#include<cmath>
+#include<stdlib.h>
+#include<tchar.h>
+using namespace std;
+int main()
+{
+	_tsetlocale(LC_ALL,_T("portuguese"));
+	//variaveis
+	int QuantidadePrimo,Contador,Numero,Raiz,I,Primo[300];
+	bool Divisivel;
+	//entrada
+	std::cout <<"Digite a quantidade de" 
+	"Números primos a ser visualizados: ";
+	std::cin >> QuantidadePrimo;
+	Primo[1] = 1;
+	Primo[2] = 2;
+	Primo[3] = 3;
+	Contador = 3;
+	Numero = 3;
+	
+	while(Contador<QuantidadePrimo)
+	{
+		Numero = Numero+2;
+		Raiz = sqrt(Numero);
+		I = 3;
+		Divisivel = false;
+		//Divisivel = false;
+		while(!Divisivel&&Primo[I]<=Raiz)
+		{
+			if(Numero%Primo[I]==0)
+			{
+				Divisivel = true;
+			}
+			else
+			{
+				I = I+1	
+			}
+		}
+		if(!Divisivel)
+			{
+				Contador = Contador +1;
+				Primo[Contador] = Numero;
+			}	
+	}
+	std::cout << "Primos: ";
+	for(I=1; I<=QuantidadePrimo;I++)
+		{
+			std::cout << Primo[I] << ", ";
+		}
+	std::cout << "\n\n";		
+	system("PAUSE");
+	return 0;
+}
