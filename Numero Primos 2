@@ -1,0 +1,49 @@
+#include<iostream>
+using namespace std;
+int main()
+{
+	int N,I,Vetor[50];
+	
+	std::cout << "DIGITE O VALOR DO ELEMENTO: ";
+	std::cin >> N;
+	
+	Vetor [0] = 1;
+	Vetor [1] = 2;
+ 	
+	 for(I=2;I<N;I++)
+ 	{
+ 		Vetor[I] = I+1;
+ 		if((Vetor[I]%3!=0) && (Vetor[I-1]%2!=0))
+ 			{
+ 				Vetor[I] = Vetor[I];
+			 }
+	 }
+	 
+	 for(I=0;I<N;I++)
+	 {
+	 	std::cout <<"Vetor "<< I <<" = "<< Vetor[I] << std::endl;
+	 }
+	 std::cout << "\n Valor Primo: ";
+	 for(I=0;I<N;I++)
+ 	{	
+ 		if(Vetor[I]<=3)
+ 		{
+		 
+ 			if((Vetor[I]%3!=0) || (Vetor[I]%2!=0))
+ 			{
+ 				cout << Vetor[I] << ", ";
+			 }
+		}
+		
+		else if(Vetor[I]>3)
+		{
+			if((Vetor[I]%3!=0) && (Vetor[I]%2!=0))
+ 				{
+ 					cout << Vetor[I] << ", ";
+				 }
+			
+		}
+	 }
+	 
+	 
+}
