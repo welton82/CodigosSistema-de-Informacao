@@ -1,0 +1,61 @@
+// ALGORÍTMO
+/* INICIO: DECLARAR VARIÁVEL
+LEIA: N
+LEIA (VALOR[I],I=1,N)
+SOMA = 0
+PARA I, DE 1 ATÉ N, FAÇA
+SOMA = SOMA+ VALOR[I]
+FIM PARA
+MEDIA = SOMA/N
+PARA I,DE 1 ATÉ N, FAÇA
+SE VALOR[I] > MEDIA ENTÃO
+IMPRIMA: VALOR[I]
+FIM SE
+FIM PARA.*/
+
+#include<iostream>
+#include<tchar.h>
+
+int main()
+{
+	_tsetlocale(LC_ALL,_T("portuguese"));
+	int N, Soma, I, Valor[I];
+	
+	std::cout << "Digite a Quantidade de Elementos: ";
+	std::cin >> N;
+	
+	for(I=1;I<=N;I++)
+		{
+			std::cout << "Digite um Valor Qualquer Para O Local: " << I << " = ";
+			std::cin >> Valor[I];
+		}
+	
+	std::cout << "Valores Digitados: ";
+	
+	for(I=1;I<=N;I++)
+		{
+			std::cout << Valor[I] << ", ";
+		}
+	
+	Soma = 0;
+
+	for(I=1;I<=N;I++)
+		{
+			Soma = Valor[I]+Soma;
+		}
+	std::cout << "Média: " << Soma/N << std::endl;
+	
+	int Media = Soma/N;
+	
+	std::cout << "Valores acima da media: ";
+	for(I=1;I<=N;I++)
+		{
+			if(Valor[I]>Media)
+				{
+					std::cout << Valor[I] << ", ";
+				}
+		}
+	std::cout << std::endl;
+	system("PAUSE");
+	return 0;
+}
