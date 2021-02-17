@@ -1,0 +1,188 @@
+#include <stdio.h>
+#include<stdlib.h>
+#include<locale.h>
+#include<string.h>
+#define MAX 800
+
+typedef struct{
+    char nome[30];
+    int idade;
+}CLIENTE;
+
+typedef struct no{
+    CLIENTE info;
+    struct no *prox;
+    struct no *ant;
+
+}ArvoreBin;
+//typedef struct no* ArvoreBin;
+
+/*ArvoreBin *CriarArvore(){
+    ArvoreBin* raiz = (ArvoreBin*)calloc(1,sizeof(ArvoreBin));
+    raiz = NULL;
+    return raiz;
+}*/
+ArvoreBin *CriarArvore(){
+    return NULL;
+}
+void Insere(ArvoreBin **raiz, CLIENTE cl ){
+    if(*raiz == NULL)
+    {
+        ArvoreBin *novo = (struct no*)calloc(1,sizeof(struct no));
+        novo->info = cl;
+        novo->ant = NULL;
+        novo->prox = NULL;
+        *raiz = novo;
+    }
+    else{
+        ArvoreBin *novo = (struct no*)calloc(1,sizeof(struct no));
+        novo->info = cl;
+        novo->ant = NULL;
+        novo->prox = NULL;
+        ArvoreBin *aux =*raiz;
+        ArvoreBin *anterior = NULL;
+        while(aux!=NULL)
+        {
+            anterior = aux;
+            if(aux->info.idade > cl.idade)
+            {
+                aux = aux->ant;
+            }
+            else{
+                aux = aux->prox;
+            }
+        }
+        if(anterior->info.idade > cl.idade)
+        {
+            anterior->ant = novo;
+        }
+        else{
+            anterior->prox = novo;
+        }
+    }
+}
+//LIBERAR NO
+void LiberaNo(struct no* No){
+    if (No == NULL)
+        return;
+    LiberaNo(No->ant);
+    LiberaNo(No->prox);
+    free(No);
+    No = NULL;
+}
+/*int EstaVazia(ArvoreBin *raiz){
+    if(raiz==NULL)
+        return 1;
+    if(*raiz == NULL)
+          return 1;
+        return 0;
+}*/
+int AlturaArvore(ArvoreBin **raiz){
+    if(raiz ==NULL)
+        return 0;
+    if(*raiz == NULL)
+        return 0;
+    int altEsq = AlturaArvore(&((*raiz)->ant));
+    int altDir = AlturaArvore(&((*raiz)->prox));
+    if(altEsq > altDir)
+        return altEsq+1;
+    else
+        altDir +1;
+}
+int TotalNo(ArvoreBin **raiz){
+    if(raiz==NULL)
+        return 0;
+    if (*raiz == NULL)
+        return 0;
+    int altEsq = TotalNo(&((*raiz)->ant));
+    int altDir = TotalNo(&((*raiz)->prox));
+    return (altEsq + altDir +1);
+}
+//PODEMOS PERCORRER A ARVORE DE TRES FORMAS:
+//1º - PRÉ - ORDEM:
+//*VISITA A RAIZ, O FILHO DA ESQUERDA E O FILHO DA DIREITA
+//2° - EM ORDEM:
+//**VISITA O FILHO DA ESQUERDA, A RAIZ E O FILHO DA DIREITA
+//3° - PÓS - ORDEM:
+//***VISITA O FILHO DA ESQUERDA, O FILHO DA DIREITA E A RAIZ
+
+void PreOrdem(ArvoreBin **raiz){
+    if(raiz ==NULL)
+        return ;
+    if(*raiz !=NULL)
+    {
+       printf("\nIdade:%d",(*raiz)->info.idade);
+        printf("\nNome:%s",(*raiz)->info.nome);
+       // printf("%s",(*raiz.info.nome)/*->info*/);
+
+        PreOrdem(&((*raiz)->ant));
+        PreOrdem(&((*raiz)->prox));
+    }
+}
+
+void EmOrdem(ArvoreBin **raiz){
+    if(raiz ==NULL)
+        return ;
+    if(*raiz !=NULL)
+    {
+        EmOrdem(&((*raiz)->ant));
+        printf("\nIdade:%d",(*raiz)->info.idade);
+        printf("\nNome:%s",(*raiz)->info.nome);
+        EmOrdem(&((*raiz)->prox));
+    }
+}
+void PosOrdem(ArvoreBin **raiz){
+    if(raiz==NULL)
+        return;
+    if(*raiz !=NULL)
+    {
+        PosOrdem(&((*raiz)->ant));
+        PosOrdem(&((*raiz)->prox));
+        printf("\nIdade:%d",(*raiz)->info.idade);
+        printf("\nNome:%s",(*raiz)->info.nome);
+    }
+}
+int main()
+{
+    CLIENTE cl;
+    ArvoreBin* raiz = CriarArvore();
+//EstaVazia(raiz);
+    //raiz = Insere(&raiz ,cl);
+
+
+    int op = -1;
+    while(op!=0)
+    {
+        printf("\n1 - Criar Arvore");
+        printf("\n2 - Inserir Folha");
+        printf("\n3 - Listar Em Ordem");
+        printf("\n4 - Listar Em Pre-Ordem");
+        printf("\n5 - Listar Em Pos-Ordem");
+        printf("\nOperacao: ");
+        scanf("%d",&op);
+        switch(op)
+        {
+        case 1:
+            CriarArvore();
+            break;
+        case 2:
+            printf("\nNome: ");
+            fflush(stdin);
+            gets(cl.nome);
+            printf("Idade: ");
+            scanf("%d",&cl.idade);
+            Insere(&raiz, cl);
+            break;
+        case 3:
+            EmOrdem(&raiz);
+            break;
+        case 4:
+            PreOrdem(&raiz);
+            break;
+        case 5:
+            PosOrdem(&raiz);
+            break;
+        }
+    }
+    return 0;
+}
