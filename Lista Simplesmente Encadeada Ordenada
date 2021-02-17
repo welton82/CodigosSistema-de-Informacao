@@ -1,0 +1,187 @@
+#include <stdio.h>
+
+typedef struct{
+    char nome[30];
+    int conta;
+}CLIENTE;
+
+typedef struct no{
+    CLIENTE info;
+    struct no *prox;
+}LISTA;
+
+LISTA *CriarLista(){
+    return NULL;
+}
+
+void Inserir(LISTA **lista, CLIENTE cl){
+    LISTA *novo = (LISTA*) calloc(1, sizeof(LISTA));
+    novo->info = cl;
+
+    LISTA *aux = *lista;
+    LISTA *anterior = NULL;
+    while((aux!=NULL)&&(novo->info.conta >aux->info.conta))
+    {
+        anterior = aux;
+        aux = aux->prox;
+    }
+    if(anterior == NULL)
+    {
+        novo->prox = aux;
+        *lista = novo;
+    }
+    else{
+        novo->prox = aux;
+        anterior->prox = novo;
+     }
+}
+
+LISTA *Acessar(LISTA **lista, int pos){
+    int i=0;
+    LISTA *aux = *lista;
+    while(i!=pos)
+    {
+        aux = aux->prox;
+        i++;
+    }
+    if(i==pos)
+    {
+        printf("\nNome: %s", aux->info.nome);
+        printf("\nConta: %d", aux->info.conta);
+    }
+    else{
+        return NULL;
+    }
+}
+void Listar(LISTA **lista){
+    LISTA *aux = *lista;
+
+    while(aux!=NULL)
+    {
+        printf("\nNome: %s....", aux->info.nome);
+        printf("Conta: %d\n", aux->info.conta);
+        aux = aux->prox;
+    }
+}
+void Destruir(LISTA **lista){
+    LISTA *aux = *lista;
+    while(aux!=NULL)
+    {
+        free(aux);
+        aux = aux->prox;
+    }
+    *lista = NULL;
+}
+
+void Eliminar(LISTA **lista, int pos){
+    LISTA *aux = *lista;
+    LISTA *anterior = NULL;
+    int cont =0;
+
+    while(cont!=pos)
+    {
+        anterior = aux;
+        aux = aux->prox;
+        cont++;
+    }
+
+    if(anterior!=NULL)
+    {
+        free(aux);
+        aux = aux->prox;
+        anterior->prox = aux;
+     }
+     else{
+        free(aux);
+        aux = aux->prox;
+        *lista = aux;
+    }
+
+}
+
+LISTA *BuscarEnderecoNome(LISTA **lista, char nome[]){
+    LISTA *aux = *lista;
+    while(aux!=NULL)
+    {
+        if(strcmp(nome,aux->info.nome)== 0)
+        {
+            printf ("\n**nome: %s",aux->info.nome);
+            printf ("   conta: %d**\n",aux->info.conta);
+
+        }
+        aux= aux->prox;
+    }
+    return NULL;
+}
+
+int main()
+{
+    LISTA *lista;
+
+    CLIENTE cl;
+    int op = -1;
+    int pos;
+    char nome[30];
+    lista = CriarLista();
+
+    do{
+        printf("\n1 - Criar Lista");
+        printf("\n3 - Inserir Ordenado");
+        printf("\n5 - Acessar Posição");
+        printf("\n6 - Listar");
+        printf("\n7 - Eliminar Posiçao");
+        printf("\n8 - Buscar dados pelo Nome");
+        printf("\n9 - Destruir Lista");
+        printf("\nInformar Operação: ");
+        scanf("%d", &op);
+
+
+        switch(op)
+        {
+        case 1:
+            CriarLista();
+            break;
+
+        case 3:
+            printf("\nNome: ");
+            fflush(stdin);
+            gets(cl.nome);
+            printf("\nConta: ");
+            scanf("%d", &cl.conta);
+            Inserir(&lista, cl);
+            break;
+
+        case 5:
+            printf("\nPosição: ");
+            scanf("%d",&pos);
+            Acessar(&lista, pos);
+            break;
+        case 6:
+            Listar(&lista);
+            break;
+        case 7:
+            printf("\nPosição a Ser Elimnada: ");
+            scanf("%d",&pos);
+            Eliminar(&lista, pos);
+            break;
+        case 8:
+            printf("\nNome: ");
+            fflush(stdin);
+            gets(nome);
+            BuscarEnderecoNome(&lista, nome);
+            break;
+        case 9:
+            Destruir(&lista);
+            break;
+        case 0:
+            printf("\nVocê Saiu! ");
+            break;
+        }
+     }while(op!=0);
+}
+
+
+
+
+
+
