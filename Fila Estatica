@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include<stdlib.h>
+#define MAX 800
+
+typedef struct {
+    int num;
+}CLIENTE;
+
+typedef struct{
+    CLIENTE vetor[MAX];
+    int nElem;
+}FILA;
+
+void CriarFila(FILA *fila){
+    fila->nElem = 0;
+}
+void Inserir(FILA *fila, CLIENTE cl){
+    fila->vetor[fila->nElem] = cl;
+    fila->nElem = fila->nElem +1;
+}
+
+void Listar(FILA *fila){
+    CLIENTE cl;
+    int i;
+    for(i = 0; i<fila->nElem; i++)
+    {
+        cl = fila->vetor[i];
+        printf("\nValor: %d",cl.num);
+    }
+}
+void Remover(FILA *fila){
+
+   for(int i = 0 ;i<=fila->nElem-1; i++)
+   {
+      fila->vetor[i] = fila->vetor[i+1];
+   }
+   fila->nElem = fila->nElem -1;
+
+}
+int main()
+{
+    FILA fila;
+    CLIENTE cl;
+    CriarFila(&fila);
+    int op = -1;
+
+    while(op!=0)
+    {
+        printf("\n1 - Criar Fila");
+        printf("\n2 - Inserir");
+        printf("\n3 - Listar");
+        printf("\n4 - Remover");
+        printf("\nOperacao: ");
+        scanf("%d",&op);
+        switch(op)
+        {
+        case 1:
+            CriarFila(&fila);
+            break;
+        case 2:
+            printf("\nNumero: ");
+            scanf("%d",&cl.num);
+            Inserir(&fila,cl);
+            break;
+        case 3:
+            Listar(&fila);
+            break;
+        case 4:
+            Remover(&fila);
+            break;
+
+        }
+
+    }
+}
+
+
