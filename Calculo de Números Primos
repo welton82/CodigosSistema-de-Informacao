@@ -1,0 +1,48 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+   int l,c,i;
+   int A[100];
+   int cont = 1;
+   int n = 20;
+   int P = 5;
+   int j = 1;
+   bool v = false;
+   while(cont < n)
+   {
+
+            for(i=3; i<P; i=i+2) //3<5  = 3<7 =5<7= 3<9 =
+            {
+                    if(P % i != 0)// 5%3 =7%3 =7%5=9%3=
+                    {
+                         v = true;    //       v =  v   =  v   =
+
+                    }
+                    else{
+
+                        P = P+2;
+                    }
+
+
+            }
+            if(v)
+            {
+                    A[j] = P;  // 1.5 = 2.7 =
+                    j++;
+            }
+            P = P+2;
+            cont ++; //2 3
+            v = false;
+   }
+    for(i=1; i<cont; i++)
+    {
+        cout << A[i] << " ";
+    }
+
+
+}
+
+
