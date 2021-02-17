@@ -1,0 +1,86 @@
+/*ALGORITMO
+INICIO: INFORME VARIAVEIS
+LEIA: N
+PARA I DE1 ATÉ N-1 FAÇA
+LEIA X[I]
+FIM PARA.
+PARA I DE  ATÉ N-1 FAÇA
+IMPRIMA X[I]
+FIM PARA.
+PARA I DE 1 ATE N-1 FAÇA
+PARA II = I+1 ATE II<N FAÇA
+SE X[II] < X[I]
+   AUX = X[II]
+   X[II]=X[I]
+   X[I] = AUX
+   FIM SE.
+   FIM PARA.
+   FIM PARA.
+PARA I DE 1 ATÉ N-1 FAÇA
+IMPRIMA X[I]
+FIM PARA.
+
+  */
+
+#include<iostream>
+#include<tchar.h>
+#include<stdlib.h>
+using namespace std;
+int main()
+{
+	int X[20], I,N;
+	
+	std::cout << "Informe a Quantidade de Elementos: " ;
+	std::cin >> N;	
+	
+	
+	
+	for(I=1;I<=N;I++)
+	{
+		std::cout << "Informe o Elemento de Ordem: " << I << ", ";
+		std::cin >> X[I];
+				
+	}
+	
+	
+	std::cout << "Valores: ";
+
+	for(I=1;I<=N;I++)
+	{
+		std::cout << X[I] << " ";
+		
+	}
+	cout << "\n ";
+	//DÚVIDA NESSA PARTE
+	for(I=1;I<N;I++)//*
+	{
+		for(int J=(I+1);J<=N;J++)//*
+		{
+		
+			if(X[J]<X[I])//*
+			{
+				
+				int Aux = X[J];//*
+				X[J] = X[I];//*
+				X[I] = Aux;//*
+				
+			}
+			
+		}	
+		
+	}
+	std::cout << "Valores Ordenados: ";
+
+	for(I=1;I<=N;I++)
+	{
+		cout << X[I] << ", ";
+	}
+		std::cout << "\n\n"; 
+	
+	
+	
+	
+	 
+	system("PAUSE");
+	return 0;
+}
